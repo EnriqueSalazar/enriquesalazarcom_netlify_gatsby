@@ -10,13 +10,13 @@ module.exports = {
                 path: `${__dirname}/src/images`,
             },
         },
-        `gatsby-transformer-sharp`,
-        `gatsby-plugin-sharp`,
+        // `gatsby-transformer-sharp`,
+        // `gatsby-plugin-sharp`,
         {
             resolve: `gatsby-plugin-manifest`,
             options: {
-                name: `gatsby-starter-default`,
-                short_name: `starter`,
+                name: `enrique-salazar-sebastiani-software-developer`,
+                short_name: `enriquesalazar`,
                 start_url: `/`,
                 background_color: `#663399`,
                 theme_color: `#663399`,
