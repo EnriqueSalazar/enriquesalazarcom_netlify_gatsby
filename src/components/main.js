@@ -4,23 +4,14 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-
 class Main extends React.Component {
-    constructor(props) {
-        super(props);
-        this.myName = React.createRef();
-        this.container = React.createRef();
-    }
-    componentDidMount() {
-        this.container.current.style.width =
-            this.myName.current.offsetWidth + 'px';
-    }
     render() {
         return (
             <Container
                 maxWidth="sm"
-                style={{ 
-                     height: '100%' }}
+                style={{
+                    height: '100%',
+                }}
             >
                 <Grid
                     container
@@ -29,23 +20,18 @@ class Main extends React.Component {
                     alignItems="center"
                     style={{
                         height: '100%',
+                        width: 'min-content',
+                        margin: '0 auto',
                     }}
                 >
-                    <Grid
-                        container
-                        ref={this.container}
-                    >
+                    <Grid container>
                         <Grid item xs={12}>
                             <div
                                 style={{
                                     width: 'max-content',
                                 }}
                             >
-                                <Typography
-                                    variant="h4"
-                                    align="center"
-                                    ref={this.myName}
-                                >
+                                <Typography variant="h4" align="center">
                                     Enrique Salazar Sebastiani
                                 </Typography>
                             </div>
@@ -67,7 +53,7 @@ class Main extends React.Component {
                         </Grid>
                     </Grid>
 
-                {/* <Link to="/page-2/">Go to page 2</Link> */}
+                    {/* <Link to="/page-2/">Go to page 2</Link> */}
                 </Grid>
             </Container>
         );
