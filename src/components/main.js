@@ -2,6 +2,9 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 
 class Main extends React.Component {
     render() {
@@ -24,7 +27,9 @@ class Main extends React.Component {
                     }}
                 >
                     <Grid container>
-                        <Grid item xs={12}>
+                        <Card raised>
+                            <CardContent>
+                                 <Grid item xs={12}>
                             <div
                                 style={{
                                     width: 'max-content',
@@ -40,7 +45,9 @@ class Main extends React.Component {
                                 Software Developer
                             </Typography>
                         </Grid>
-                        <Grid item xs={6}>
+                            </CardContent>
+                            <CardActions>
+                                  <Grid item xs={6}>
                             <Typography variant="h6" component="h3" align="left">
                                 <a
                                     href="https://linkedin.com/in/enriquesalazar/"
@@ -62,6 +69,10 @@ class Main extends React.Component {
                                 </a>
                             </Typography>
                         </Grid>
+                            </CardActions>
+                        </Card>
+                       
+                      
                     </Grid>
                 </Grid>
             </Container>
