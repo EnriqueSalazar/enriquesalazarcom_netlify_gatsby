@@ -9,7 +9,7 @@ function SEO() {
             <meta name="description" content="Software Developer. With 20 years of working experience on IT, I have been working with JavaScript related technologies for the last 4 years." />
             <meta name="author" content="Enrique Salazar Sebastiani"/>
             <meta name="keywords" content="JavaScript,Node,React,Express,developer,software developer,software engineer,engineer,full stack,full stack developer,full stack engineer,fullstack,fullstack developer,fullstack engineer,frontend,frontend developer,backend,backend developer,netherlands,colombia,barranquilla"/>
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+            {/* <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" /> */}
         </Helmet>
     );
 }
