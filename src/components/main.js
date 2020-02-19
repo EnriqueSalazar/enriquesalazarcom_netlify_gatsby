@@ -5,12 +5,13 @@ import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import Center from './center';
 
 class Main extends React.Component {
     render() {
         return (
             <Container
-                maxWidth="sm"
+                maxWidth="xs"
                 style={{
                     height: '100%',
                 }}
@@ -22,12 +23,13 @@ class Main extends React.Component {
                     alignItems="center"
                     style={{
                         height: '100%',
-                        width: 'min-content',
+                        // width: 'min-content',
                         margin: '0 auto',
                     }}
                 >
                     <Grid container>
-                        <Card raised>
+                        <Center />
+                        {/* <Card raised>
                             <CardContent>
                                  <Grid item xs={12}>
                             <div
@@ -70,9 +72,7 @@ class Main extends React.Component {
                             </Typography>
                         </Grid>
                             </CardActions>
-                        </Card>
-                       
-                      
+                        </Card> */}
                     </Grid>
                 </Grid>
             </Container>
