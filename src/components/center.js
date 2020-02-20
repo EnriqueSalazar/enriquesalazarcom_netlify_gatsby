@@ -32,6 +32,11 @@ const useStyles = makeStyles(({ palette }) => ({
     },
     content: {
         textAlign: 'center',
+        padding: 0,
+        margin: 16,
+        '&:last-child': {
+            paddingBottom: 0,
+        },
     },
 }));
 
@@ -47,14 +52,19 @@ const Center = () => {
     const borderedGridStyles = useGutterBorderedGridStyles({
         borderColor: 'rgba(0, 0, 0, 0.08)',
         height: '50%',
+        padding: 0,
+        margin: 16,
     });
+    console.log(foto);
     return (
         <Card className={cx(styles.root, shadowStyles.root)}>
             <CardMedia
                 className={cx(styles.media, mediaStyles.root)}
                 image={foto}
             />
-            <CardContent className={styles.content}>
+            <CardContent
+                className={styles.content}
+            >
                 <TextInfoCardContent
                     classes={textCardContentStyles}
                     overline={'Software Developer'}
@@ -67,6 +77,7 @@ const Center = () => {
                         p={2}
                         flex={'auto'}
                         className={borderedGridStyles.item}
+                        style={{ margin: 16, padding: 0, marginBottom: 0 }}
                     >
                         <a
                             href="https://linkedin.com/in/enriquesalazar/"
@@ -80,6 +91,7 @@ const Center = () => {
                         p={2}
                         flex={'auto'}
                         className={borderedGridStyles.item}
+                        style={{ margin: 16, padding: 0, marginBottom: 0 }}
                     >
                         <a
                             href="https://github.com/enriquesalazar"
