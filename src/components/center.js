@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import cx from 'clsx';
 
 import { makeStyles } from '@material-ui/styles';
@@ -18,11 +18,7 @@ import { motion, useAnimation } from 'framer-motion';
 
 import foto from '../images/enrique.jpg';
 
-// https://andrejgajdos.com/orchestrating-animations-with-framer-motion-in-react-js/
-// https://www.framer.com/api/motion/animation/#animation-controls
-// https://reactjs.org/docs/hooks-effect.html
-
-const useStyles = makeStyles(({ palette }) => ({
+const useStyles = makeStyles(() => ({
     root: {
         margin: 'auto',
         borderRadius: 12,
@@ -46,142 +42,123 @@ const useStyles = makeStyles(({ palette }) => ({
     },
 }));
 
-const cardMotion = {
-    hidden: { opacity: 1, scale: 0 },
-    visible: {
-        opacity: 1,
-        scale: 1,
-        transition: {
-            // delay: 0.3,
-            // when: 'beforeChildren',
-            // staggerChildren: 0.1,
-            duration: 2,
+const variant = {
+    card: {
+        hidden: { opacity: 1, scale: 0 },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            transition: {
+                duration: 2,
+            },
+        },
+    },
+    media: {
+        hidden: {
+            height: 0,
+        },
+        visible: {
+            height: '100%',
+            transition: {
+                duration: 2,
+            },
+        },
+    },
+    foto: {
+        hidden: {
+            opacity: 0,
+        },
+        visible: {
+            opacity: 1,
+            transition: {
+                duration: 1,
+            },
+        },
+    },
+    content: {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                duration: 2,
+            },
         },
     },
 };
-const mediaMotion = {
-    hidden: {
-        height: 0,
-        // opacity: 0,
-    },
-    visible: {
-        height: '100%',
-        // opacity: 0,
-        transition: {
-            duration: 2,
-        },
-    },
-};
-const fotoMotion = {
-    hidden: {
-        opacity: 0,
-    },
-    visible: {
-        opacity: 1,
-        transition: {
-            duration: 1,
-        },
-    },
-};
-const contentMotion = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            duration: 2,
-        },
-    },
-};
+
 const Center = () => {
-    const mediaMotionRef = useRef(null);
+    const control = {
+        card: useAnimation(),
+        content: useAnimation(),
+        media: useAnimation(),
+        foto: useAnimation(),
+    };
 
-    const cardControls = useAnimation();
-    const contentControls = useAnimation();
-    const mediaControls = useAnimation();
-    const fotoControls = useAnimation();
-    const [mediaReady, setMediaReady] = useState();
-    const [fotoReady, setFotoReady] = useState();
-    const [contentReady, setContentReady] = useState();
-
-    const styles = useStyles();
-    const mediaStyles = useFourThreeCardMediaStyles();
-    const textCardContentStyles = useText04CardContentStyles();
-    textCardContentStyles.heading = cx(
-        textCardContentStyles.heading,
-        styles.heading
+    const style = {
+        base: useStyles(),
+        media: useFourThreeCardMediaStyles(),
+        textCardContent: useText04CardContentStyles(),
+        shadow: useOverShadowStyles({ inactive: true }),
+        borderedGrid: useGutterBorderedGridStyles({
+            borderColor: 'rgba(0, 0, 0, 0.08)',
+            height: '50%',
+            padding: 0,
+            margin: 16,
+        }),
+    };
+    style.textCardContent.heading = cx(
+        style.textCardContent.heading,
+        style.base.heading
     );
-    const shadowStyles = useOverShadowStyles({ inactive: true });
-    const borderedGridStyles = useGutterBorderedGridStyles({
-        borderColor: 'rgba(0, 0, 0, 0.08)',
-        height: '50%',
-        padding: 0,
-        margin: 16,
-    });
-    // console.log(foto);
 
     useEffect(() => {
-        cardControls.start(cardMotion.visible).then(() => {
-            setContentReady(true);
-        });
-    }, []);
-
-    useEffect(() => {
-        contentReady &&
-            contentControls.start(contentMotion.visible).then(() => {
-                setMediaReady(true);
-            });
-    }, [contentReady]);
-
-    useEffect(() => {
-        mediaReady &&
-            mediaControls.start(mediaMotion.visible).then(a => {
-                // setFotoReady(true);
-            });
-    }, [mediaReady]);
-
-    // useEffect(() => {
-    //     fotoReady && fotoControls.start(fotoMotion.visible);
-    // }, [fotoReady]);
+        control.card.start(variant.card.visible);
+    }, [control.card]);
 
     return (
         <motion.div
             className="container"
-            variants={cardMotion}
+            variants={variant.card}
             initial="hidden"
-            animate={cardControls}
+            animate={control.card}
+            onAnimationComplete={() => {
+                control.content.start(variant.content.visible);
+            }}
         >
-            <Card className={cx(styles.root, shadowStyles.root)}>
+            <Card className={cx(style.base.root, style.shadow.root)}>
                 <motion.div
-                    ref={mediaMotionRef}
                     className="media"
-                    variants={mediaMotion}
+                    variants={variant.media}
                     initial="hidden"
-                    animate={mediaControls}
+                    animate={control.media}
                     onAnimationComplete={() => {
-                        fotoControls.start(fotoMotion.visible);
+                        control.foto.start(variant.foto.visible);
                     }}
                 >
                     <motion.div
                         className="foto"
-                        variants={fotoMotion}
+                        variants={variant.foto}
                         initial="hidden"
-                        animate={fotoControls}
+                        animate={control.foto}
                     >
                         <CardMedia
-                            className={cx(styles.media, mediaStyles.root)}
+                            className={cx(style.base.media, style.media.root)}
                             image={foto}
                         />
                     </motion.div>
                 </motion.div>
                 <motion.div
                     className="content"
-                    variants={contentMotion}
+                    variants={variant.content}
                     initial="hidden"
-                    animate={contentControls}
+                    animate={control.content}
+                    onAnimationComplete={() => {
+                        control.media.start(variant.media.visible);
+                    }}
                 >
-                    <CardContent className={styles.content}>
+                    <CardContent className={style.base.content}>
                         <TextInfoCardContent
-                            classes={textCardContentStyles}
+                            classes={style.textCardContent}
                             overline={'Software Developer'}
                             heading={'Enrique Salazar Sebastiani'}
                         />
@@ -191,7 +168,7 @@ const Center = () => {
                             <Box
                                 p={2}
                                 flex={'auto'}
-                                className={borderedGridStyles.item}
+                                className={style.borderedGrid.item}
                                 style={{
                                     margin: 16,
                                     padding: 0,
@@ -209,7 +186,7 @@ const Center = () => {
                             <Box
                                 p={2}
                                 flex={'auto'}
-                                className={borderedGridStyles.item}
+                                className={style.borderedGrid.item}
                                 style={{
                                     margin: 16,
                                     padding: 0,
