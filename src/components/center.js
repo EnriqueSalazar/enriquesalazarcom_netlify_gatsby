@@ -23,6 +23,7 @@ const useStyles = makeStyles(() => ({
         margin: 'auto',
         borderRadius: 12,
         padding: 12,
+        boxShadow: 'none',
     },
     media: {
         borderRadius: 6,
@@ -44,10 +45,24 @@ const useStyles = makeStyles(() => ({
 
 const variant = {
     card: {
-        hidden: { opacity: 1, scale: 0 },
+        hidden: {
+            opacity: 1,
+            scale: 0,
+        },
         visible: {
             opacity: 1,
             scale: 1,
+            transition: {
+                duration: 3,
+            },
+        },
+    },
+    shadow: {
+        hidden: {
+            boxShadow: 'rgba(34, 35, 58, 0.2) 0px 0px 0px',
+        },
+        visible: {
+            boxShadow: 'rgba(34, 35, 58, 0.2) 0px 14px 80px',
             transition: {
                 duration: 2,
             },
@@ -60,7 +75,7 @@ const variant = {
         visible: {
             height: '100%',
             transition: {
-                duration: 2,
+                duration: 1,
             },
         },
     },
@@ -80,7 +95,7 @@ const variant = {
         visible: {
             opacity: 1,
             transition: {
-                duration: 2,
+                duration: 1,
             },
         },
     },
@@ -92,6 +107,7 @@ const Center = () => {
         content: useAnimation(),
         media: useAnimation(),
         foto: useAnimation(),
+        shadow: useAnimation(),
     };
 
     const style = {
@@ -123,88 +139,99 @@ const Center = () => {
             animate={control.card}
             onAnimationComplete={() => {
                 control.content.start(variant.content.visible);
+                control.shadow.start(variant.shadow.visible);
             }}
         >
-            <Card className={cx(style.base.root, style.shadow.root)}>
-                <motion.div
-                    className="media"
-                    variants={variant.media}
-                    initial="hidden"
-                    animate={control.media}
-                    onAnimationComplete={() => {
-                        control.foto.start(variant.foto.visible);
-                    }}
-                >
+            <motion.div
+                className="shadow"
+                variants={variant.shadow}
+                initial="hidden"
+                animate={control.shadow}
+            >
+                <Card className={cx(style.base.root, style.shadow.root)}>
                     <motion.div
-                        className="foto"
-                        variants={variant.foto}
+                        className="media"
+                        variants={variant.media}
                         initial="hidden"
-                        animate={control.foto}
+                        animate={control.media}
+                        onAnimationComplete={() => {
+                            control.foto.start(variant.foto.visible);
+                        }}
                     >
-                        <CardMedia
-                            className={cx(style.base.media, style.media.root)}
-                            image={foto}
-                        />
+                        <motion.div
+                            className="foto"
+                            variants={variant.foto}
+                            initial="hidden"
+                            animate={control.foto}
+                        >
+                            <CardMedia
+                                className={cx(
+                                    style.base.media,
+                                    style.media.root
+                                )}
+                                image={foto}
+                            />
+                        </motion.div>
                     </motion.div>
-                </motion.div>
-                <motion.div
-                    className="content"
-                    variants={variant.content}
-                    initial="hidden"
-                    animate={control.content}
-                    onAnimationComplete={() => {
-                        control.media.start(variant.media.visible);
-                    }}
-                >
-                    <CardContent className={style.base.content}>
-                        <TextInfoCardContent
-                            classes={style.textCardContent}
-                            overline={'Software Developer'}
-                            heading={'Enrique Salazar Sebastiani'}
-                        />
-                        <Divider light />
+                    <motion.div
+                        className="content"
+                        variants={variant.content}
+                        initial="hidden"
+                        animate={control.content}
+                        onAnimationComplete={() => {
+                            control.media.start(variant.media.visible);
+                        }}
+                    >
+                        <CardContent className={style.base.content}>
+                            <TextInfoCardContent
+                                classes={style.textCardContent}
+                                overline={'Software Developer'}
+                                heading={'Enrique Salazar Sebastiani'}
+                            />
+                            <Divider light />
 
-                        <Box display={'flex'}>
-                            <Box
-                                p={2}
-                                flex={'auto'}
-                                className={style.borderedGrid.item}
-                                style={{
-                                    margin: 16,
-                                    padding: 0,
-                                    marginBottom: 0,
-                                }}
-                            >
-                                <a
-                                    href="https://linkedin.com/in/enriquesalazar/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                            <Box display={'flex'}>
+                                <Box
+                                    p={2}
+                                    flex={'auto'}
+                                    className={style.borderedGrid.item}
+                                    style={{
+                                        margin: 16,
+                                        padding: 0,
+                                        marginBottom: 0,
+                                    }}
                                 >
-                                    LinkedIn
-                                </a>
-                            </Box>
-                            <Box
-                                p={2}
-                                flex={'auto'}
-                                className={style.borderedGrid.item}
-                                style={{
-                                    margin: 16,
-                                    padding: 0,
-                                    marginBottom: 0,
-                                }}
-                            >
-                                <a
-                                    href="https://github.com/enriquesalazar"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                    <a
+                                        href="https://linkedin.com/in/enriquesalazar/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        LinkedIn
+                                    </a>
+                                </Box>
+                                <Box
+                                    p={2}
+                                    flex={'auto'}
+                                    className={style.borderedGrid.item}
+                                    style={{
+                                        margin: 16,
+                                        padding: 0,
+                                        marginBottom: 0,
+                                    }}
                                 >
-                                    Github
-                                </a>
+                                    <a
+                                        href="https://github.com/enriquesalazar"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Github
+                                    </a>
+                                </Box>
                             </Box>
-                        </Box>
-                    </CardContent>
-                </motion.div>
-            </Card>
+                        </CardContent>
+                    </motion.div>
+                </Card>
+            </motion.div>
         </motion.div>
     );
 };
