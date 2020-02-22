@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import cx from 'clsx';
 
 import { makeStyles } from '@material-ui/styles';
@@ -46,18 +46,9 @@ const useStyles = makeStyles(() => ({
 const variant = {
     card: {
         hidden: {
-            opacity: 1,
+            opacity: 0,
             scale: 0,
-            borderRadius: '50%'
         },
-        // visible: {
-        //     scale: [1, 2, 2, 1, 1],
-        //     rotate: [0, 0, 270, 270, 0],
-        //     borderRadius: ['20%', '20%', '50%', '50%', '20%'],
-        //     transition: {
-        //         duration: 3,
-        //     },
-        // },
         visible: {
             opacity: 1,
             scale: 1,
@@ -137,14 +128,6 @@ const Center = () => {
     );
 
     useEffect(() => {
-        // control.card.start({
-        //     scale: [1, 2, 2, 1, 1],
-        //     rotate: [0, 0, 270, 270, 0],
-        //     borderRadius: ['20%', '20%', '50%', '50%', '20%'],
-        //     transition: {
-        //         duration: 3,
-        //     },
-        // });
         control.card.start(variant.card.visible);
     }, [control.card]);
 
@@ -159,7 +142,7 @@ const Center = () => {
                 control.shadow.start(variant.shadow.visible);
             }}
             whileTap={{ scale: 1.03 }}
-            whileHover={{ scale: 1.02 }} 
+            whileHover={{ scale: 1.02 }}
         >
             <motion.div
                 className="shadow"
