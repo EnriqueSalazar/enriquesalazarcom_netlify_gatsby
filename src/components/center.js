@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import cx from 'clsx';
 
 import { makeStyles } from '@material-ui/styles';
@@ -14,7 +14,13 @@ import { useText04CardContentStyles } from '@mui-treasury/styles/cardContent/tex
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useGutterBorderedGridStyles } from '@mui-treasury/styles/grid/gutterBordered';
 
+import { motion, useAnimation } from 'framer-motion';
+
 import foto from '../images/enrique.jpg';
+
+// https://andrejgajdos.com/orchestrating-animations-with-framer-motion-in-react-js/
+// https://www.framer.com/api/motion/animation/#animation-controls
+// https://reactjs.org/docs/hooks-effect.html
 
 const useStyles = makeStyles(({ palette }) => ({
     root: {
@@ -40,7 +46,63 @@ const useStyles = makeStyles(({ palette }) => ({
     },
 }));
 
+const cardMotion = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        transition: {
+            // delay: 0.3,
+            // when: 'beforeChildren',
+            // staggerChildren: 0.1,
+            duration: 2,
+        },
+    },
+};
+const mediaMotion = {
+    hidden: {
+        height: 0,
+        // opacity: 0,
+    },
+    visible: {
+        height: '100%',
+        // opacity: 0,
+        transition: {
+            duration: 2,
+        },
+    },
+};
+const fotoMotion = {
+    hidden: {
+        opacity: 0,
+    },
+    visible: {
+        opacity: 1,
+        transition: {
+            duration: 1,
+        },
+    },
+};
+const contentMotion = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            duration: 2,
+        },
+    },
+};
 const Center = () => {
+    const mediaMotionRef = useRef(null);
+
+    const cardControls = useAnimation();
+    const contentControls = useAnimation();
+    const mediaControls = useAnimation();
+    const fotoControls = useAnimation();
+    const [mediaReady, setMediaReady] = useState();
+    const [fotoReady, setFotoReady] = useState();
+    const [contentReady, setContentReady] = useState();
+
     const styles = useStyles();
     const mediaStyles = useFourThreeCardMediaStyles();
     const textCardContentStyles = useText04CardContentStyles();
@@ -55,55 +117,118 @@ const Center = () => {
         padding: 0,
         margin: 16,
     });
-    console.log(foto);
-    return (
-        <Card className={cx(styles.root, shadowStyles.root)}>
-            <CardMedia
-                className={cx(styles.media, mediaStyles.root)}
-                image={foto}
-            />
-            <CardContent
-                className={styles.content}
-            >
-                <TextInfoCardContent
-                    classes={textCardContentStyles}
-                    overline={'Software Developer'}
-                    heading={'Enrique Salazar Sebastiani'}
-                />
-                <Divider light />
+    // console.log(foto);
 
-                <Box display={'flex'}>
-                    <Box
-                        p={2}
-                        flex={'auto'}
-                        className={borderedGridStyles.item}
-                        style={{ margin: 16, padding: 0, marginBottom: 0 }}
+    useEffect(() => {
+        cardControls.start(cardMotion.visible).then(() => {
+            setContentReady(true);
+        });
+    }, []);
+
+    useEffect(() => {
+        contentReady &&
+            contentControls.start(contentMotion.visible).then(() => {
+                setMediaReady(true);
+            });
+    }, [contentReady]);
+
+    useEffect(() => {
+        mediaReady &&
+            mediaControls.start(mediaMotion.visible).then(a => {
+                // setFotoReady(true);
+            });
+    }, [mediaReady]);
+
+    // useEffect(() => {
+    //     fotoReady && fotoControls.start(fotoMotion.visible);
+    // }, [fotoReady]);
+
+    return (
+        <motion.div
+            className="container"
+            variants={cardMotion}
+            initial="hidden"
+            animate={cardControls}
+        >
+            <Card className={cx(styles.root, shadowStyles.root)}>
+                <motion.div
+                    ref={mediaMotionRef}
+                    className="media"
+                    variants={mediaMotion}
+                    initial="hidden"
+                    animate={mediaControls}
+                    onAnimationComplete={() => {
+                        fotoControls.start(fotoMotion.visible);
+                    }}
+                >
+                    <motion.div
+                        className="foto"
+                        variants={fotoMotion}
+                        initial="hidden"
+                        animate={fotoControls}
                     >
-                        <a
-                            href="https://linkedin.com/in/enriquesalazar/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            LinkedIn
-                        </a>
-                    </Box>
-                    <Box
-                        p={2}
-                        flex={'auto'}
-                        className={borderedGridStyles.item}
-                        style={{ margin: 16, padding: 0, marginBottom: 0 }}
-                    >
-                        <a
-                            href="https://github.com/enriquesalazar"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Github
-                        </a>
-                    </Box>
-                </Box>
-            </CardContent>
-        </Card>
+                        <CardMedia
+                            className={cx(styles.media, mediaStyles.root)}
+                            image={foto}
+                        />
+                    </motion.div>
+                </motion.div>
+                <motion.div
+                    className="content"
+                    variants={contentMotion}
+                    initial="hidden"
+                    animate={contentControls}
+                >
+                    <CardContent className={styles.content}>
+                        <TextInfoCardContent
+                            classes={textCardContentStyles}
+                            overline={'Software Developer'}
+                            heading={'Enrique Salazar Sebastiani'}
+                        />
+                        <Divider light />
+
+                        <Box display={'flex'}>
+                            <Box
+                                p={2}
+                                flex={'auto'}
+                                className={borderedGridStyles.item}
+                                style={{
+                                    margin: 16,
+                                    padding: 0,
+                                    marginBottom: 0,
+                                }}
+                            >
+                                <a
+                                    href="https://linkedin.com/in/enriquesalazar/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    LinkedIn
+                                </a>
+                            </Box>
+                            <Box
+                                p={2}
+                                flex={'auto'}
+                                className={borderedGridStyles.item}
+                                style={{
+                                    margin: 16,
+                                    padding: 0,
+                                    marginBottom: 0,
+                                }}
+                            >
+                                <a
+                                    href="https://github.com/enriquesalazar"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Github
+                                </a>
+                            </Box>
+                        </Box>
+                    </CardContent>
+                </motion.div>
+            </Card>
+        </motion.div>
     );
 };
 
