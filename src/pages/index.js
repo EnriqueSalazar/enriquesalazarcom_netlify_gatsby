@@ -15,7 +15,7 @@ const theme = createMuiTheme({
     palette: {
         text: { primary: '#607d8b' },
         background: {
-            default: '#cddc39',
+            default: 'black',
         },
     },
 });
@@ -29,6 +29,17 @@ const IndexPage = () => {
                 BIRDS({
                     el: myRef.current,
                     THREE: THREE,
+                    mouseControls: true,
+                    touchControls: true,
+                    minHeight: 200.0,
+                    minWidth: 200.0,
+                    scale: 1.0,
+                    scaleMobile: 1.0,
+                    color: 0xfa6600,
+                    backgroundColor: 0x0,
+                    points: 12.0,
+                    maxDistance: 33.0,
+                    spacing: 14.0,
                 })
             );
         }

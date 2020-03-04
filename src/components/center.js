@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
         borderRadius: 12,
         padding: 12,
         boxShadow: 'none',
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        backgroundColor: 'rgba(0,0,0,0.5)',
     },
     media: {
         borderRadius: 6,
