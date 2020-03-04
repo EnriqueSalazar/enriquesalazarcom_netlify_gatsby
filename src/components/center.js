@@ -16,6 +16,7 @@ import { useGutterBorderedGridStyles } from '@mui-treasury/styles/grid/gutterBor
 
 import { motion, useAnimation } from 'framer-motion';
 
+// @ts-ignore
 import foto from '../images/enrique.jpg';
 
 const useStyles = makeStyles(() => ({
